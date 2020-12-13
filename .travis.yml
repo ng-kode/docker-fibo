@@ -1,0 +1,21 @@
+services:
+  - docker
+
+before_install:
+  - docker build -t client-test-image -f ./client/Dockerfile.dev ./client
+  # can add any other build commands here for other services
+script:
+  - docker run -e CI=true client-test-image npm run test -- --coverage
+  # can add any other test commands here for other services
+
+after_success:
+  - docker build -t richardngcccc/docker-fibo_api -f ./api/Dockerfile ./api
+  - docker build -t richardngcccc/docker-fibo_client -f ./client/Dockerfile ./client
+  - docker build -t richardngcccc/docker-fibo_nginx -f ./nginx/Dockerfile ./nginx
+  - docker build -t richardngcccc/docker-fibo_worker -f ./worker/Dockerfile ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push -t richardngcccc/docker-fibo_api
+  - docker push -t richardngcccc/docker-fibo_client
+  - docker push -t richardngcccc/docker-fibo_nginx
+  - docker push -t richardngcccc/docker-fibo_worker
