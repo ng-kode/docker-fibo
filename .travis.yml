@@ -15,7 +15,7 @@ after_success:
   - docker build -t richardngcccc/docker-fibo_worker -f ./worker/Dockerfile ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push -t richardngcccc/docker-fibo_api
-  - docker push -t richardngcccc/docker-fibo_client
-  - docker push -t richardngcccc/docker-fibo_nginx
-  - docker push -t richardngcccc/docker-fibo_worker
+  - docker push richardngcccc/docker-fibo_api
+  - docker push richardngcccc/docker-fibo_client
+  - docker push richardngcccc/docker-fibo_nginx
+  - docker push richardngcccc/docker-fibo_worker
